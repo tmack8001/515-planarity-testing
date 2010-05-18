@@ -153,6 +153,10 @@ public class Graph {
 		return adjacencyMap.get(v);
 	}
 	
+	public List<Object> getNodes() {
+		return Arrays.asList(adjacencyMap.keySet().toArray());
+	}
+	
 	public boolean isBipartite() {
 		//3 arrays: graphNodes = HashMap.keyset,  
 		//			color=value of graphNodes color (0=>unvisited, 1=>red, 2=>blue)
