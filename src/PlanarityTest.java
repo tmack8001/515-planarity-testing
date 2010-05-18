@@ -132,11 +132,13 @@ public class PlanarityTest {
 			
 	}
 	
-	public static List<Graph> FindPieces(Graph graph, Graph cycle, List<Object> state) { 
+	public static List<Graph> FindPieces(Graph graph, Graph cycle) { 
 	    
 		//List<Object> graphNodes = cycle.getNodes();
 		List<Object> cycleNodes = cycle.getNodes();
 		
+	
+		List<Object> state = new ArrayList<Object>();
 		
 		List<Graph> pieces = new ArrayList<Graph>();  
 		
