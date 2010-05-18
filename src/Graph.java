@@ -7,15 +7,19 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
- * Class Graph
+ * This class is a data representation and implementation of a Graph. The data
+ * structure used for this representation is an adjacency list (a modified adjacency matrix),
+ * which only uses space for edges that actually exist in the represented graph.
  * 
- * @author Trevor Mack
- * @author David Sweeney
+ * @author Trevor Mack		(tmm9274@rit.edu)
+ * @author David Sweeney	(dts7079@rit.edu)
  *
  */
 public class Graph {
 
+	//adjacency list: data structure of graph
 	protected HashMap<Object, List<Object>> adjacencyMap;
+	//states to be applied to a node in graph specific methods
 	enum VertexState {
 		//unvisited, visiting, visited
         White, Gray, Black
@@ -143,6 +147,23 @@ public class Graph {
 		return getNeighbors(v1).contains(v2);
 	}
 	
+	public void addGraph(Graph graph) {
+		for( Object vertex : getNodes()) {
+			for( Object neighbor : getNeighbors(vertex) ) {
+				this.addEdge(vertex, neighbor);
+			}
+		}
+	}
+	
+	/**
+	 * Get all the nodes in this graph as a list.
+	 * 
+	 * @return list of node objects
+	 */
+	public List<Object> getNodes() {
+		return Arrays.asList(adjacencyMap.keySet().toArray());
+	}
+	
 	/**
 	 * Finds and returns all adjacent nodes to a vertex.
 	 * 
@@ -153,10 +174,17 @@ public class Graph {
 		return adjacencyMap.get(v);
 	}
 	
-	public List<Object> getNodes() {
-		return Arrays.asList(adjacencyMap.keySet().toArray());
-	}
 	
+	
+	/**
+	 * A bipartite graph (or bigraph) is a graph whose vertices can be divided into 
+	 * two disjoint sets U and V such that every edge connects a vertex in U to one 
+	 * in V; that is, U and V are independent sets. A graph is bipartite if it has a
+	 * 2-coloring that can be "applied" to the graph nodes.
+	 * 
+	 * @return	true	- graph is a bipartite graph
+	 * 			false	- graph is not a bipartite graph
+	 */
 	public boolean isBipartite() {
 		//3 arrays: graphNodes = HashMap.keyset,  
 		//			color=value of graphNodes color (0=>unvisited, 1=>red, 2=>blue)
@@ -239,4 +267,43 @@ public class Graph {
 		}
 		return null;
 	}
+	
+	public boolean isPlanar(Graph cycle) throws PlanarityException {
+		if(!this.isBipartite()) throw new PlanarityException("Graph must be bipartite"); 
+		// 1. If the graph has more than 3n -6 edges, return "nonplanar."
+		if( this.getEdgeCount() > 3*this.size()-6 ) return false;
+		
+		// 2. Compute the pieces of G with respect to C...if no C then whole graph is 1 peice
+		List<Graph> pieces = new ArrayList<Graph>();
+		if(cycle == null) pieces.add(this);
+		//else pieces = this.getPieces(cycle);
+		
+		// 3. For each piece P of G that is not a path,
+		for( Graph piece : pieces ) {	
+			Graph p1 = new Graph();
+			Graph c1 = new Graph();
+			// 1. let P' be that graph obtained by adding P to C
+			p1.addGraph(piece);
+			p1.addGraph(cycle);
+			
+			// 2. let C' be the cycle of P' obtained from C by replacing the portion of C between two consecutive attachments with a path of P between them
+			c1.addGraph(cycle);
+			// TODO: implement the replacement with the consecutive attachments of P and C
+			
+			// 3. apply the algorithm recursively to graph P' and cycle C'. If P' is nonplanar, return "nonplanar."
+			if(!p1.isPlanar(c1)) return false; 
+		}
+		
+		// 4. Compute the interlacement graph I of the pieces.
+		//Graph interlacement = cycle.interlacementGraph(pieces)?
+		
+		// 5. Test whether I is bipartite. If I is bipartite, return "planar".
+		/*if( interlacement.isBipartite() ) {
+			return true;
+		}*/
+		
+		// 6. Return "non-planar."
+		return true;
+	}
+	
 }
