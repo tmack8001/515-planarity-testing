@@ -275,11 +275,15 @@ public class Graph {
 		
 		// 2. Compute the pieces of G with respect to C...if no C then whole graph is 1 peice
 		List<Graph> pieces = new ArrayList<Graph>();
-		if(cycle == null) pieces.add(this);
-		//else pieces = this.getPieces(cycle);
+		if(cycle == null) {
+			pieces.add(this);
+		}else {
+			pieces = PlanarityTest.FindPieces(this, cycle, null);
+		}
 		
 		// 3. For each piece P of G that is not a path,
-		for( Graph piece : pieces ) {	
+		for( Graph piece : pieces ) {
+			// TODO: if( piece.isPath() ) continue;
 			Graph p1 = new Graph();
 			Graph c1 = new Graph();
 			// 1. let P' be that graph obtained by adding P to C
@@ -290,20 +294,19 @@ public class Graph {
 			c1.addGraph(cycle);
 			// TODO: implement the replacement with the consecutive attachments of P and C
 			
+			
 			// 3. apply the algorithm recursively to graph P' and cycle C'. If P' is nonplanar, return "nonplanar."
 			if(!p1.isPlanar(c1)) return false; 
 		}
 		
 		// 4. Compute the interlacement graph I of the pieces.
-		//Graph interlacement = cycle.interlacementGraph(pieces)?
+		Graph interlacement = PlanarityTest.InterlacementGraph(pieces, cycle);
 		
 		// 5. Test whether I is bipartite. If I is bipartite, return "planar".
-		/*if( interlacement.isBipartite() ) {
-			return true;
-		}*/
+		if( interlacement.isBipartite() ) return true;
 		
 		// 6. Return "non-planar."
-		return true;
+		return false;
 	}
 	
 }
