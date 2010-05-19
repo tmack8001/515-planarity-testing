@@ -23,7 +23,6 @@ public class PlanarityTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-	// TODO Auto-generated method stub
 		if( args.length != 1 ) {
 			System.err.println("usage: java PlanarityTest filename");
 		}else {
@@ -45,7 +44,6 @@ public class PlanarityTest {
 				System.err.println(e.getMessage());
 				System.exit(1);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

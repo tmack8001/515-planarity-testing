@@ -123,6 +123,26 @@ public class Graph {
 	}
 	
 	/**
+	 * Removes a node from the graph, and all cooresponding edges.
+	 * 
+	 * @param vertex	- the node to remove
+	 * @return true		- if the vertex was removed, false otherwise
+	 */
+	public boolean removeVertex (Object vertex) {
+		if (!adjacencyMap.containsKey(vertex))
+			return false;
+		
+		for(Object node : getNodes()) {
+			List<Object> neighbors = adjacencyMap.get(node);
+			if(neighbors.contains(vertex)) {
+				removeEdge(node, vertex);
+			}
+		}
+		adjacencyMap.remove(vertex);
+		return true;
+	}
+	
+	/**
 	* Adds an edge, and vertices if not already present
 	*
 	* @param v1 	- the beginning vertex object of the edge
@@ -134,6 +154,24 @@ public class Graph {
 		adjacencyMap.get(v1).add(v2);
 		adjacencyMap.get(v2).add(v1);
 		return true;
+	}
+	
+	/**
+	 * Removes an edge from the graph (undirected)
+	 * 
+	 * @param v1	- a node in the graph connected to v2
+	 * @param v2	- another node in the graph connected to v1
+	 * @return true - if the edge was removed, otherwise false
+	 */
+	public boolean removeEdge (Object v1, Object v2) {
+		if ( this.isEdge(v1, v2) ) {
+			//remove edge from v1
+			adjacencyMap.get(v1).remove(v2);
+			//remove edge from v2
+			adjacencyMap.get(v2).remove(v1);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -310,7 +348,7 @@ public class Graph {
 		
 		// 3. For each piece P of G that is not a path,
 		for( Graph piece : pieces ) {
-			// TODO: if( piece.isPath() ) continue;
+			if( piece.isPath() ) continue;
 			Graph p1 = new Graph();
 			Graph c1 = new Graph();
 			// 1. let P' be that graph obtained by adding P to C
@@ -319,14 +357,14 @@ public class Graph {
 			
 			// 2. let C' be the cycle of P' obtained from C by replacing the portion of C between two consecutive attachments with a path of P between them
 			c1.addGraph(cycle);
-				
-			// TODO: implement the replacement with the consecutive attachments of P and C
+			
+			// replacement with the consecutive attachments of P and C
 			List<Object> attachments=PlanarityTest.Attach(piece.getNodes(), cycle);
 			Stack<Object> interval = PlanarityTest.Intervalize(cycle,attachments.get(0), attachments.get(attachments.size()-1));
 			
 			for (Object node : interval) {
 				if (!attachments.contains(node))
-					c1.RemoveVertex(node);
+					c1.removeVertex(node);
 			}
 			
 			c1.addGraph(piece);
