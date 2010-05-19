@@ -34,12 +34,12 @@ public class PlanarityTest {
 				System.out.println("#unique-nodes? " + graph.size());
 				System.out.println("#undirected-edges? " + graph.getEdgeCount());
 				
-				System.out.print("simple cycle? "); graph.simpleCycle();
+				System.out.print("simple cylce? "); graph.simpleCycle();
 				System.out.println("is bipartite? " + graph.isBipartite());
 				System.out.println("is path? " + graph.isPath());
 				
 				//TODO: planar doesn't work yet...
-				System.out.println("is planar? " + graph.isPlanar(null));
+				System.out.println("is planar? " + graph.isPlanar(graph.simpleCycle()));
 			} catch (PlanarityException e) {
 				System.err.println(e.getMessage());
 				System.exit(1);
