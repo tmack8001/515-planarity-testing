@@ -67,9 +67,9 @@ public class Graph {
 	private Graph( List<Object> list ) {
 		this();
 		if( list.size() > 1 ) {
-			Object prev = list.get(0);
 			for( int i=1; i<list.size(); i++ ) {
-				addEdge(prev, list.get(i));
+				addEdge(list.get(i), list.get((i-1)% (list.size())));
+				addEdge(list.get(i), list.get((i+1)% (list.size())));
 			}
 		}
 	}
@@ -150,10 +150,13 @@ public class Graph {
 	* @return true 	- if the edge was added by this call
 	*/
 	public boolean addEdge (Object v1, Object v2) {
-		addVertex (v1); addVertex (v2);
-		adjacencyMap.get(v1).add(v2);
-		adjacencyMap.get(v2).add(v1);
-		return true;
+		if(!isEdge(v1, v2)) {
+			addVertex (v1); addVertex (v2);
+			adjacencyMap.get(v1).add(v2);
+			adjacencyMap.get(v2).add(v1);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -182,7 +185,10 @@ public class Graph {
 	 * @return true	- if v1 and v2 are connected by 1 edge
 	 */
 	public boolean isEdge (Object v1, Object v2) {
-		return getNeighbors(v1).contains(v2);
+		if(getNodes().contains(v1) && getNodes().contains(v2) ) {
+			return getNeighbors(v1).contains(v2);
+		}
+		return false;
 	}
 	
 	/**
