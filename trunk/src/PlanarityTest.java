@@ -31,7 +31,19 @@ public class PlanarityTest {
 			Graph graph = null;
 			try {
 				graph = new Graph(aFile);
-				System.out.println(graph.simpleCycle());
+				
+				System.out.println("#unique-nodes? " + graph.size());
+				System.out.println("#undirected-edges? " + graph.getEdgeCount());
+				
+				System.out.print("simple cylce? "); graph.simpleCycle();
+				System.out.println("is bipartite? " + graph.isBipartite());
+				System.out.println("is path? " + graph.isPath());
+				
+				//TODO: planar doesn't work yet...
+				System.out.println("is planar? " + graph.isPlanar(null));
+			} catch (PlanarityException e) {
+				System.err.println(e.getMessage());
+				System.exit(1);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
