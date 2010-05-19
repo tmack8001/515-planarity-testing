@@ -174,7 +174,14 @@ public class Graph {
 		return adjacencyMap.get(v);
 	}
 	
-	
+	public boolean isPath() {
+		for( Object node : getNodes() ) {
+			if( this.getNeighbors(node).size() > 2 ) {
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	/**
 	 * A bipartite graph (or bigraph) is a graph whose vertices can be divided into 
