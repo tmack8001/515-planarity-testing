@@ -51,6 +51,16 @@ public class PlanarityTest {
 	
 	public static Graph InterlacementGraph(List<Graph> pieces, Graph cycle) { 
 		
+		if (cycle==null) {
+			if (pieces!=null) {
+				if (pieces.size() == 1) {
+					return pieces.get(0);
+				}
+			} else
+				return null;
+		}
+			
+		
 		Graph Interlacement = new Graph();
 		
 		
@@ -58,6 +68,7 @@ public class PlanarityTest {
 			
 			//TODO: devise method to determine order of vertices in cycle so that we can determine interval list
 			List<Object> attach = Attach(pieces.get(i).getNodes(), cycle);
+			
 			
 			Object first = attach.get(0);
 			Object last = attach.get(attach.size()-1);
@@ -86,6 +97,9 @@ public class PlanarityTest {
 	
 	public static List<Object> Attach(List<Object> piece, Graph Cycle) {
 		//attach(n) returns attachment vertices of piece n (in other words, all nodes that exist in both the piece and the cycle)
+		if (Cycle==null)
+			return null;
+		
 		List<Object> cycleNodes = Cycle.getNodes();
 		
 		List<Object> attachments=new ArrayList<Object>();
