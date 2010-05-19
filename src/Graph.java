@@ -147,6 +147,11 @@ public class Graph {
 		return getNeighbors(v1).contains(v2);
 	}
 	
+	/**
+	 * Adds all the nodes and edges that are in the graph to this graph.
+	 * 
+	 * @param graph	- the graph to add to this graph
+	 */
 	public void addGraph(Graph graph) {
 		for( Object vertex : getNodes()) {
 			for( Object neighbor : getNeighbors(vertex) ) {
@@ -174,6 +179,12 @@ public class Graph {
 		return adjacencyMap.get(v);
 	}
 	
+	/**
+	 * Tests to see if the given graph is a path
+	 * 
+	 * @return	true	- if graph is a path
+	 * 			false	- if graph is not a path
+	 */
 	public boolean isPath() {
 		for( Object node : getNodes() ) {
 			if( this.getNeighbors(node).size() > 2 ) {
@@ -275,6 +286,15 @@ public class Graph {
 		return null;
 	}
 	
+	/**
+	 * The implementation of the planarity algorithm description taken from di Battista et al
+	 * which tests whether or not a graph is planar.
+	 * 
+	 * @param 	cycle		- a cycle in the graph (seperating)
+	 * @return	true		- graph is indeed planar
+	 * 			false		- graph is not planar
+	 * @throws PlanarityException if input graph is not bipartite (algorithm description)
+	 */
 	public boolean isPlanar(Graph cycle) throws PlanarityException {
 		if(!this.isBipartite()) throw new PlanarityException("Graph must be bipartite"); 
 		// 1. If the graph has more than 3n -6 edges, return "nonplanar."
