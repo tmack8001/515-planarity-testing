@@ -255,7 +255,7 @@ public class Graph {
 			state[i] = VertexState.White;
 		}
 		state[0] = VertexState.Gray; //mark it
-		System.out.println(graphNodes.get(0)); //display it
+		//System.out.println(graphNodes.get(0)); //display it
 		stack.push(graphNodes.get(0)); //push it
 		
 		while( !stack.isEmpty() ) {
@@ -279,7 +279,7 @@ public class Graph {
 				stack.pop();
 			}else {
 				state[unvisited] = VertexState.Gray; //mark it
-				System.out.println(graphNodes.get(unvisited)); //display it
+				//System.out.println(graphNodes.get(unvisited)); //display it
 				stack.push(graphNodes.get(unvisited)); //push it
 			}
 		}
