@@ -319,8 +319,17 @@ public class Graph {
 			
 			// 2. let C' be the cycle of P' obtained from C by replacing the portion of C between two consecutive attachments with a path of P between them
 			c1.addGraph(cycle);
+				
 			// TODO: implement the replacement with the consecutive attachments of P and C
+			List<Object> attachments=PlanarityTest.Attach(piece.getNodes(), cycle);
+			Stack<Object> interval = PlanarityTest.Intervalize(cycle,attachments.get(0), attachments.get(attachments.size()-1));
 			
+			for (Object node : interval) {
+				if (!attachments.contains(node))
+					c1.RemoveVertex(node);
+			}
+			
+			c1.addGraph(piece);
 			
 			// 3. apply the algorithm recursively to graph P' and cycle C'. If P' is nonplanar, return "nonplanar."
 			if(!p1.isPlanar(c1)) return false; 
