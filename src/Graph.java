@@ -259,23 +259,33 @@ public class Graph {
 					//collect neighboring nodes
 					Object u = nodeStack.pop();
 					int uIndex = graphNodes.indexOf(u);
-					List<Object> neighbors = getNeighbors(u);
 					
-					while( !neighbors.isEmpty() ) {
+					for( Object neighbor : getNeighbors(u) ) {
 						//neighbor of u
-						Object v = neighbors.remove(0);
-						int index = graphNodes.indexOf(v);
+						int index = graphNodes.indexOf(neighbor);
 						if(color[index] == color[uIndex]) {
 							return false;
 						}else if(color[index] == 0) {
-							nodeStack.push(v);
+							nodeStack.push(neighbor);
 							color[index] = 3 - color[uIndex];
 						}
 					}
 				}
 			}
 		}
-		
+		return true;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private boolean isBiconnected() {
+		for( Object node : getNodes() ) {
+			if( this.getNeighbors(node).size() < 2 ) {
+				return false;
+			}
+		}
 		return true;
 	}
 	
@@ -334,7 +344,7 @@ public class Graph {
 	 * @throws PlanarityException if input graph is not bipartite (algorithm description)
 	 */
 	public boolean isPlanar(Graph cycle) throws PlanarityException {
-		if(!this.isBipartite()) throw new PlanarityException("Graph must be bipartite"); 
+		if(!this.isBiconnected()) throw new PlanarityException("Graph must be biconnected"); 
 		// 1. If the graph has more than 3n -6 edges, return "nonplanar."
 		if( this.getEdgeCount() > 3*this.size()-6 ) return false;
 		
