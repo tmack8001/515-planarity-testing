@@ -12,7 +12,7 @@ import java.util.*;
  * which only uses space for edges that actually exist in the represented graph.
  * 
  * @author Trevor Mack		(tmm9274@rit.edu)
- * @author David Sweeney	(dts7079@rit.edu)
+ * @author David Sweeney	(dfs7079@rit.edu)
  *
  */
 public class Graph {
@@ -105,7 +105,7 @@ public class Graph {
 			List<Object> edges = (ArrayList<Object>)adjacencyMap.get(it.next());
 			count += edges.size();
 		}
-		return count;
+		return count/2;
 	}
 	
 	/**
@@ -197,8 +197,8 @@ public class Graph {
 	 * @param graph	- the graph to add to this graph
 	 */
 	public void addGraph(Graph graph) {
-		for( Object vertex : getNodes()) {
-			for( Object neighbor : getNeighbors(vertex) ) {
+		for( Object vertex : graph.getNodes()) {
+			for( Object neighbor : graph.getNeighbors(vertex) ) {
 				this.addEdge(vertex, neighbor);
 			}
 		}
@@ -324,7 +324,7 @@ public class Graph {
 				}
 				if(graphNodes.get(index) == stack.get(0)) {
 					System.out.println("loop");
-					stack.push(graphNodes.get(index));
+					//stack.push(graphNodes.get(index));
 					return new Graph(stack);
 				}
 			}
