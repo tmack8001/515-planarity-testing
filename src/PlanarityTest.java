@@ -41,7 +41,7 @@ public class PlanarityTest {
 				//TODO: planar doesn't work yet...
 				System.out.println("is planar? " + graph.isPlanar(graph.simpleCycle()));
 			} catch (PlanarityException e) {
-				System.err.println(e.getMessage());
+				System.out.println("is planer? false");
 				System.exit(1);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -209,7 +209,6 @@ public class PlanarityTest {
 	}
 	
 	private static Graph TraversePiece(Graph graph, List<Object> cycleNodes, Object startNode, List<Object> state) {
-		//TODO: add code that passes in some list containing all the nodes in the piece that we can add to
 		List<Object> neighbors = graph.getNeighbors(startNode);
 		
 		Graph piece = new Graph();
@@ -218,8 +217,7 @@ public class PlanarityTest {
 		state.add(startNode);
 		
 		for (int i=0; i < neighbors.size(); i++) {
-			if (!state.contains(neighbors.get(i)) && !cycleNodes.contains(neighbors.get(i))) { 
-				//TODO: change piece to a Graph, and add Edges as well as vertices
+			if (!state.contains(neighbors.get(i)) && !cycleNodes.contains(neighbors.get(i))) {
 				Graph newPiece=TraversePiece(graph, cycleNodes, neighbors.get(i), state);
 				piece.addGraph(newPiece);
 				piece.addEdge(startNode, neighbors.get(i));
