@@ -237,5 +237,43 @@ public class PlanarityTest {
 	
 	}
 	
+	static List<Graph> FindVertexPieces(Graph graph, Graph cycle, List<Graph> otherPieces) {
+			
+		List<Graph> pieces = new ArrayList<Graph>();
+		
+		List<Object[]> graphEdges = graph.getEdges();
+		List<Object[]> cycleEdges = cycle.getEdges();
+	
+		//for (Object[] edge : graphEdges) {
+		//	if (graphEdges.contains(edge))
+		//			continue;//graphEdges.remove(edge);
+		//}
+		
+		for (Object[] edge : cycleEdges) {
+			for (int i =0; i < graphEdges.size(); i++) {
+				if ( (graphEdges.get(i)[0]==edge[0] && graphEdges.get(i)[1]==edge[1]) ||
+					 (graphEdges.get(i)[1]==edge[0] && graphEdges.get(i)[0]==edge[1]))
+					graphEdges.remove(i);
+			}
+		}
+		for (Graph piece : otherPieces) {
+			for (Object[] edge : piece.getEdges()) {
+				for (int i =0; i < graphEdges.size(); i++) {
+					if ( (graphEdges.get(i)[0]==edge[0] && graphEdges.get(i)[1]==edge[1]) ||
+							(graphEdges.get(i)[1]==edge[0] && graphEdges.get(i)[0]==edge[1]))
+						graphEdges.remove(i);
+				}
+			}
+		}
+		
+		for (Object[] edge : graphEdges) {
+			Graph newGraph = new Graph();
+			newGraph.addEdge(edge[0], edge[1]);
+			pieces.add(newGraph);
+		}
+	
+		return pieces;
+	}
+	
 
 }
