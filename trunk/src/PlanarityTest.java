@@ -241,34 +241,32 @@ public class PlanarityTest {
 			
 		List<Graph> pieces = new ArrayList<Graph>();
 		
-		List<Object[]> graphEdges = graph.getEdges();
-		List<Object[]> cycleEdges = cycle.getEdges();
+		List<Edge> graphEdges = graph.getEdges();
+		List<Edge> cycleEdges = cycle.getEdges();
 	
-		//for (Object[] edge : graphEdges) {
+		//for (Edge edge : graphEdges) {
 		//	if (graphEdges.contains(edge))
 		//			continue;//graphEdges.remove(edge);
 		//}
 		
-		for (Object[] edge : cycleEdges) {
+		for (Edge edge : cycleEdges) {
 			for (int i =0; i < graphEdges.size(); i++) {
-				if ( (graphEdges.get(i)[0]==edge[0] && graphEdges.get(i)[1]==edge[1]) ||
-					 (graphEdges.get(i)[1]==edge[0] && graphEdges.get(i)[0]==edge[1]))
+				if ( (graphEdges.get(i).equals(edge)))
 					graphEdges.remove(i);
 			}
 		}
 		for (Graph piece : otherPieces) {
-			for (Object[] edge : piece.getEdges()) {
+			for (Edge edge : piece.getEdges()) {
 				for (int i =0; i < graphEdges.size(); i++) {
-					if ( (graphEdges.get(i)[0]==edge[0] && graphEdges.get(i)[1]==edge[1]) ||
-							(graphEdges.get(i)[1]==edge[0] && graphEdges.get(i)[0]==edge[1]))
+					if ( (graphEdges.get(i).equals(edge)))
 						graphEdges.remove(i);
 				}
 			}
 		}
 		
-		for (Object[] edge : graphEdges) {
+		for (Edge edge : graphEdges) {
 			Graph newGraph = new Graph();
-			newGraph.addEdge(edge[0], edge[1]);
+			newGraph.addEdge(edge.v1, edge.v2);
 			pieces.add(newGraph);
 		}
 	
