@@ -34,7 +34,7 @@ public class PlanarityTest {
 				System.out.println("#unique-nodes? " + graph.size());
 				System.out.println("#undirected-edges? " + graph.getEdgeCount());
 				
-				System.out.print("simple cylce? "); graph.simpleCycle();
+				System.out.print("simple cycle? "); graph.simpleCycle();
 				System.out.println("is bipartite? " + graph.isBipartite());
 				System.out.println("is path? " + graph.isPath());
 				
@@ -95,28 +95,34 @@ public class PlanarityTest {
 		
 	}
 	
-	public static List<Object> Attach(List<Object> piece, Graph Cycle) {
+	public static List<Object> Attach(List<Object> piece, Graph cycle) {
 		//attach(n) returns attachment vertices of piece n (in other words, all nodes that exist in both the piece and the cycle)
-		if (Cycle==null)
+		if (cycle==null)
 			return null;
 		
-		List<Object> cycleNodes = Cycle.getNodes();
+		List<Object> cycleNodes = cycle.getNodes();
 		
 		List<Object> attachments=new ArrayList<Object>();
 		
 		for (int i=0; i < cycleNodes.size(); i++) {
-			List<Object> neighbors = Cycle.getNeighbors(cycleNodes.get(i));
+			List<Object> neighbors = cycle.getNeighbors(cycleNodes.get(i));
 			
 			for (int j=0; j < neighbors.size(); j++) {
 				if (piece.contains(neighbors.get(j))) {
 					//add the current cycle node to attachment list and move
 					//to next cycle node
-					attachments.add(cycleNodes.get(i));
+					attachments.add(neighbors.get(j));
 					continue;
 				}
 						
 			}
 		}
+		
+		/*for (int i=0; i < cycleNodes.size(); i++) {
+			if (piece.contains(cycleNodes.get(i)))
+				attachments.add(cycleNodes.get(i));
+		}*/
+		
 		
 		return attachments;
 	
@@ -125,32 +131,43 @@ public class PlanarityTest {
 	public static Stack<Object> Intervalize(Graph cycle, Object first, Object last) {
 		List<Object> neighbors = cycle.getNeighbors(first);
 		Stack<Object> pathStack = new Stack<Object>();
+		List<Object> visited = new ArrayList<Object>();
+		pathStack.add(first);
+		
+		boolean found=false;
 		for (int i=0; i < neighbors.size(); i++) {
-			if (neighbors.get(i)!=last)
-				DepthSearch(cycle, neighbors.get(i), last, pathStack);
+			if (neighbors.get(i)!=last && !found) {
+				visited.add(first);
+				if (DepthSearch(cycle, neighbors.get(i), last, pathStack, visited) != (Object)(-1))
+					found=true;
+			}
 		}
 		
 		return pathStack;
 	
 	}
 	
-	private static Object DepthSearch(Graph cycle, Object first, Object goal, Stack<Object> currentPath) {
+	private static Object DepthSearch(Graph cycle, Object first, Object goal, Stack<Object> currentPath, List<Object> visited) {
 		
 		List<Object> neighbors = cycle.getNeighbors(first);
+		visited.add(first);
 		
 		for (int i=0; i < neighbors.size(); i++ ) {
-			if (neighbors.get(i) != goal) {
-				Object result = DepthSearch(cycle, first, goal, currentPath);
+			if (neighbors.get(i) != goal && !visited.contains(neighbors.get(i))) {
+				Object result = DepthSearch(cycle, neighbors.get(i), goal, currentPath, visited);
 				
-				if (result != (Object)(-1))
+				if (result != (Object)(-1)) {
 					currentPath.add(result);
+					return neighbors.get(i);
+				}
 			}
 			else 
-				return
-					neighbors.get(i);
+				if (neighbors.get(i)==goal)
+				return neighbors.get(i);
 				
 		}
 		
+		//visited.remove(first);
 		return -1;
 		
 			
@@ -176,8 +193,11 @@ public class PlanarityTest {
 				
 				
 				//search the node if it is not on the cycle
-				if (!cycleNodes.contains(neighbors.get(j))) 				
-					pieces.add(TraversePiece(graph, cycleNodes, neighbors.get(j), state)); //this should add all nodes to the piece
+				if (!cycleNodes.contains(neighbors.get(j)) && !state.contains(neighbors.get(j))) {
+					Graph newPiece = TraversePiece(graph, cycleNodes, neighbors.get(j), state); //this should add all nodes to the piece
+					//newPiece.addEdge(neighbors.get(j), cycleNodes.get(i));
+					pieces.add(newPiece);
+				}
 						
 			//and i think that's it	
 			}
@@ -200,12 +220,16 @@ public class PlanarityTest {
 		for (int i=0; i < neighbors.size(); i++) {
 			if (!state.contains(neighbors.get(i)) && !cycleNodes.contains(neighbors.get(i))) { 
 				//TODO: change piece to a Graph, and add Edges as well as vertices
-				
-				piece = TraversePiece(graph, cycleNodes, neighbors.get(i), state);
+				Graph newPiece=TraversePiece(graph, cycleNodes, neighbors.get(i), state);
+				piece.addGraph(newPiece);
 				piece.addEdge(startNode, neighbors.get(i));
 				
 				//also write code to add this node to the piece list or whatever
 			}
+			if (cycleNodes.contains(neighbors.get(i))) {
+				piece.addEdge(startNode, neighbors.get(i));
+			}
+				
 			
 		}
 		
