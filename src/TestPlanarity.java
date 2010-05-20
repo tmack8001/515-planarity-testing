@@ -32,7 +32,7 @@ public class TestPlanarity {
 			try {
 				graph = new Graph(aFile);
 				
-				System.out.println("#unique-nodes? " + graph.size());
+				/*System.out.println("#unique-nodes? " + graph.size());
 				System.out.println("#undirected-edges? " + graph.getEdgeCount());
 				
 				System.out.print("simple cycle? "); graph.simpleCycle();
@@ -40,9 +40,14 @@ public class TestPlanarity {
 				System.out.println("is path? " + graph.isPath());
 				
 				//TODO: planar doesn't work yet...
-				System.out.println("is planar? " + graph.isPlanar(graph.simpleCycle()));
+				System.out.println("is planar? " + graph.isPlanar(graph.simpleCycle()));*/
+				if (graph.isPlanar(graph.simpleCycle()))
+					System.out.println("planar");
+				else
+					System.out.println("nonplanar");
+				
 			} catch (PlanarityException e) {
-				System.out.println("is planer? false");
+				System.out.println("nonplanar");
 				System.exit(1);
 			} catch (Exception e) {
 				e.printStackTrace();

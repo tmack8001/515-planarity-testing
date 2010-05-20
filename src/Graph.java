@@ -340,7 +340,7 @@ public class Graph {
 					i = neighbors.size();
 				}
 				if(graphNodes.get(index) == stack.get(0)) {
-					System.out.println("loop");
+					//System.out.println("loop");
 					//stack.push(graphNodes.get(index));
 					return new Graph(stack);
 				}
