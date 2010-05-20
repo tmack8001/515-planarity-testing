@@ -1,11 +1,12 @@
+/**
+ * filename: TestPlanarity.java
+ */
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-/**
- * filename: PlanarityTest.java
- */
 
 /**
  * This class contains the main method of our Project. Implements the algorithm
@@ -13,11 +14,11 @@ import java.util.Stack;
  * written by Ioannis G. Tollis, Giuseppe Di Battista, Peter Eades, Roberto Tamassia.
  * Algorithm can be found in Chapter 3: Divide and Conquer page 80.
  * 
- * @author Trevor Mack
- * @author David Sweeney
+ * @author Trevor Mack		(tmm9274@rit.edu)
+ * @author David Sweeney	(dfs7079@rit.edu)
  *
  */
-public class PlanarityTest {
+public class TestPlanarity {
 
 	/**
 	 * @param args

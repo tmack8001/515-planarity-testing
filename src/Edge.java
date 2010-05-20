@@ -1,4 +1,15 @@
-
+/**
+ * filename: Edge.java
+ */
+ 
+/**
+ * The Edge class is an aggregate structure for graph edge objects. An instance of this
+ * class represents one edge in a graph.
+ * 
+ * @author Trevor Mack		(tmm9274@rit.edu)
+ * @author David Sweeney	(dfs7079@rit.edu)
+ *
+ */
 public class Edge {
 	Object v1;
 	Object v2;
