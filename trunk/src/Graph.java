@@ -376,8 +376,8 @@ public class Graph {
 		if(cycle == null) {
 			pieces.add(this);
 		}else {
-			pieces = PlanarityTest.FindPieces(this, cycle);
-			pieces.addAll(PlanarityTest.FindVertexPieces(this, cycle, pieces));
+			pieces = TestPlanarity.FindPieces(this, cycle);
+			pieces.addAll(TestPlanarity.FindVertexPieces(this, cycle, pieces));
 		}
 		
 		// 3. For each piece P of G that is not a path,
@@ -393,8 +393,8 @@ public class Graph {
 			c1.addGraph(cycle);
 			
 			// replacement with the consecutive attachments of P and C
-			List<Object> attachments=PlanarityTest.Attach(piece.getNodes(), cycle);
-			Stack<Object> interval = PlanarityTest.Intervalize(cycle,attachments.get(0), attachments.get(attachments.size()-1));
+			List<Object> attachments=TestPlanarity.Attach(piece.getNodes(), cycle);
+			Stack<Object> interval = TestPlanarity.Intervalize(cycle,attachments.get(0), attachments.get(attachments.size()-1));
 			
 			for (Object node : interval) {
 				if (!attachments.contains(node))
@@ -408,7 +408,7 @@ public class Graph {
 		}
 		
 		// 4. Compute the interlacement graph I of the pieces.
-		Graph interlacement = PlanarityTest.InterlacementGraph(pieces, cycle);
+		Graph interlacement = TestPlanarity.InterlacementGraph(pieces, cycle);
 		
 		// 5. Test whether I is bipartite. If I is bipartite, return "planar".
 		if( interlacement.isBipartite() ) return true;
