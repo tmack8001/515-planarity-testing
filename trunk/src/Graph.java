@@ -108,6 +108,22 @@ public class Graph {
 		return count/2;
 	}
 	
+	public List<Object[]> getEdges() {
+		List<Object[]> edges = new ArrayList<Object[]>();
+		List<Object> state = new ArrayList<Object>();
+		//iterate over the hashmap's keys counting edges
+		for( Object v1 : getNodes() ) {
+			for( Object v2 : getNeighbors(v1) ) {
+				if(!state.contains(v2)) {
+					Object[] edge1 = {v1, v2};
+					edges.add(edge1);
+				}
+			}
+			state.add(v1);
+		}
+		return edges;
+	}
+	
 	/**
 	* Adds a specified object as a vertex
 	*
