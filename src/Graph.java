@@ -376,6 +376,7 @@ public class Graph {
 			pieces.add(this);
 		}else {
 			pieces = PlanarityTest.FindPieces(this, cycle);
+			pieces.addAll(PlanarityTest.FindVertexPieces(this, cycle, pieces));
 		}
 		
 		// 3. For each piece P of G that is not a path,
